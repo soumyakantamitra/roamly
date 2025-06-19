@@ -11,7 +11,7 @@ export const travelerCount= [
     title: 'Couple',
     desc: 'Two voyagers on a shared path',
     icon: '🌄',
-    people: '1 people'
+    people: '2 people'
   },
   {
     id: 3,
