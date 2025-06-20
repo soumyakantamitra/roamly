@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"
 import { budgetSelect, travelerCount } from "@/constants/options";
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import { Link } from "react-router-dom";
 
 function CreateTrip() {
 
@@ -14,19 +15,16 @@ function CreateTrip() {
 
   const handleInputChange = (name: string, value: string) => {
 
-    // if (name == 'duration' && value > '30') {
-
-    // }
-
     setFormData({
       ...formData,
       [name] : value
     })
   }
 
-  useEffect(() => {
+  const OnGenerateTrip = () => {
     console.log(formData);
-  }, [formData]);
+  }
+
 
   return (
     <div className="sm:px-10 md:px-32 lg:px-56 xl:px-72 px-5 mt-10">
@@ -78,8 +76,11 @@ function CreateTrip() {
       </div>
 
       <div className="my-10 flex justify-between">
-        <Button>Go Back</Button>
-        <Button>Generate Trip</Button>
+        <Link to={'/'}>
+          <Button>Go Back</Button>
+        </Link>
+        
+        <Button onClick={OnGenerateTrip}>Generate Trip</Button>
       </div>
     </div>
   )
