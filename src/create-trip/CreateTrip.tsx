@@ -3,12 +3,13 @@ import { Input } from "@/components/ui/input"
 import { budgetSelect, travelerCount } from "@/constants/options";
 import { useState } from "react"
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 function CreateTrip() {
 
   const [formData, setFormData] = useState({
     location : '',
-    duration : '',
+    duration : '0',
     budget : '',
     people : ''
   });
@@ -22,6 +23,13 @@ function CreateTrip() {
   }
 
   const OnGenerateTrip = () => {
+    if (!formData.location || !formData.budget || !formData.people 
+      || (parseInt(formData.duration) < 5 || parseInt(formData.duration) > 30)) {
+        
+        toast.error("Please fill up all the details");
+        return ;
+      }
+
     console.log(formData);
   }
 
