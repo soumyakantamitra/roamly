@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"
-import { budgetSelect, travelerCount } from "@/constants/options";
+import { budgetSelect, prompt, travelerCount } from "@/constants/options";
+import aiGeneration from "@/service/AIModel";
 import { useState } from "react"
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
@@ -14,15 +15,25 @@ function CreateTrip() {
     people : ''
   });
 
+  const [openDailog, setOpenDailog] = useState(false);
+
   const handleInputChange = (name: string, value: string) => {
 
     setFormData({
       ...formData,
       [name] : value
-    })
+    });
   }
 
-  const OnGenerateTrip = () => {
+  const OnGenerateTrip = async() => {
+
+    const user = localStorage.getItem('user');
+
+    if (!user) {
+      setOpenDailog(true);
+      return ;
+    }
+
     if (!formData.location || !formData.budget || !formData.people 
       || (parseInt(formData.duration) < 5 || parseInt(formData.duration) > 30)) {
         
@@ -31,6 +42,14 @@ function CreateTrip() {
       }
 
     console.log(formData);
+    const finalPrompt = prompt
+      .replace('{location}', formData.location)
+      .replace('{duration}', formData.duration)
+      .replace('{budget}', formData.budget)
+      .replace('{people}', formData.people)
+    console.log(finalPrompt);
+    const trip = await aiGeneration(finalPrompt);
+    console.log(trip);
   }
 
 
