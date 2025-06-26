@@ -5,6 +5,19 @@ import aiGeneration from "@/service/AIModel";
 import { useState } from "react"
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { FcGoogle } from "react-icons/fc";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { useGoogleLogin, type TokenResponse } from "@react-oauth/google";
+import axios from "axios";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "@/service/firebaseConfig";
+
 
 function CreateTrip() {
 
@@ -17,6 +30,8 @@ function CreateTrip() {
 
   const [openDailog, setOpenDailog] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const handleInputChange = (name: string, value: string) => {
 
     setFormData({
@@ -24,6 +39,11 @@ function CreateTrip() {
       [name] : value
     });
   }
+
+  const login = useGoogleLogin({
+    onSuccess: (response: TokenResponse) => getUserProfile(response),
+    onError: (error) => console.log(error)
+  })
 
   const OnGenerateTrip = async() => {
 
@@ -35,11 +55,13 @@ function CreateTrip() {
     }
 
     if (!formData.location || !formData.budget || !formData.people 
-      || (parseInt(formData.duration) < 5 || parseInt(formData.duration) > 30)) {
+      || (parseInt(formData.duration) < 3 || parseInt(formData.duration) > 20)) {
         
         toast.error("Please fill up all the details");
         return ;
       }
+    
+    setLoading(true);
 
     console.log(formData);
     const finalPrompt = prompt
@@ -50,6 +72,38 @@ function CreateTrip() {
     console.log(finalPrompt);
     const trip = await aiGeneration(finalPrompt);
     console.log(trip);
+    setLoading(false);
+    saveTrip(trip);
+  }
+
+  const saveTrip = async(tripData: string) => {
+    
+    setLoading(true);
+    const userString = localStorage.getItem("user");
+    const user = userString ? JSON.parse(userString) : null;
+    const docId = Date.now().toString();
+
+    await setDoc(doc(db, "Trips", docId), {
+      userPreference: formData,
+      tripData: tripData,
+      userEmail: user.email,
+      id: docId
+    });
+    setLoading(false);
+  }
+
+  const getUserProfile = (tokenInfo: TokenResponse) => {
+    axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?acess_token=${tokenInfo.access_token}`, {
+      headers: {
+        Authorization: `Bearer ${tokenInfo.access_token}`,
+        Accept: 'Application/json'
+      }
+    }).then((response) => {
+      console.log(response);
+      localStorage.setItem('user', JSON.stringify(response.data));
+      setOpenDailog(false);
+      OnGenerateTrip();
+    })
   }
 
 
@@ -76,8 +130,9 @@ function CreateTrip() {
         <div className="mt-3">
           {budgetSelect.map((item) => (
             <div key={item.id} 
-              className={`my-3 p-4 border rounded-lg hover:shadow-lg cursor-pointer 
-                ${formData.budget === item.title ? 'shadow-lg border-black' : ''}`}
+              className={`my-4 p-4 border rounded-lg cursor-pointer 
+                ${formData.budget === item.title ? 
+                  'shadow-[5px_5px_0px_0px_rgba(109,40,217)]' : 'hover:shadow-lg dark:hover:shadow-accent'}`}
               onClick={() => handleInputChange("budget", item.title)}>
               <h2 className="text-3xl">{item.icon}</h2>
               <h2 className="font-bold text-lg">{item.title}</h2>
@@ -91,8 +146,9 @@ function CreateTrip() {
         <h2 className="text-xl my-3 font-medium">Who’s coming along for your next big trip?</h2>
         <div className="grid grid-cols-4 gap-5 mt-5">
           {travelerCount.map((item) => (
-            <div key={item.id} className={`p-4 border rounded-lg hover:shadow-lg cursor-pointer 
-              ${formData.people === item.people ? 'shadow-lg border-black' : ''}`}
+            <div key={item.id} className={`p-4 border rounded-lg cursor-pointer
+              ${formData.people === item.people ? 
+                'shadow-[5px_5px_0px_0px_rgba(237,153,36)]' : 'hover:shadow-lg dark:hover:shadow-accent'}`}
               onClick={() => handleInputChange("people", item.people)}>
               <h2 className="text-3xl">{item.icon}</h2>
               <h2 className="font-bold text-lg">{item.title}</h2>
@@ -107,8 +163,27 @@ function CreateTrip() {
           <Button>Go Back</Button>
         </Link>
         
-        <Button onClick={OnGenerateTrip}>Generate Trip</Button>
+        <Button onClick={OnGenerateTrip}>
+          Generate Trip
+        </Button>
       </div>
+
+      <Dialog open={openDailog} onOpenChange={setOpenDailog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle><img src="/logo.svg" className="w-35"/></DialogTitle>
+            <DialogDescription className="mt-3">
+              Sign in securely with Google authentication
+              <Button
+                onClick={() => login()} 
+                className="w-full mt-5 flex gap-4 items-center">
+                <FcGoogle className="size-5"/>
+                Sign in with Google
+              </Button>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
