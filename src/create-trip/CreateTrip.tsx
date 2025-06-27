@@ -163,7 +163,11 @@ function CreateTrip() {
           <Button>Go Back</Button>
         </Link>
         
-        <Button onClick={OnGenerateTrip}>
+        <Button 
+          onClick={OnGenerateTrip}
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Generate Trip"}
           Generate Trip
         </Button>
       </div>
