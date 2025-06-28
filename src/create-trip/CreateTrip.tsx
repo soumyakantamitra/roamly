@@ -73,10 +73,10 @@ function CreateTrip() {
     const trip = await aiGeneration(finalPrompt);
     console.log(trip);
     setLoading(false);
-    saveTrip(trip);
+    saveTrip(JSON.parse(trip));
   }
 
-  const saveTrip = async(tripData: string) => {
+  const saveTrip = async(tripData: object) => {
     
     setLoading(true);
     const userString = localStorage.getItem("user");
@@ -93,7 +93,7 @@ function CreateTrip() {
   }
 
   const getUserProfile = (tokenInfo: TokenResponse) => {
-    axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?acess_token=${tokenInfo.access_token}`, {
+    axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo.access_token}`, {
       headers: {
         Authorization: `Bearer ${tokenInfo.access_token}`,
         Accept: 'Application/json'
@@ -168,7 +168,6 @@ function CreateTrip() {
           disabled={loading}
         >
           {loading ? "Loading..." : "Generate Trip"}
-          Generate Trip
         </Button>
       </div>
 
