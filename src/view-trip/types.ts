@@ -4,7 +4,15 @@ export type TripType = {
     tripData: {
       budget: string;
       duration_days: number;
-      hotel_options: Array<object>;
+      hotel_options: [{
+        name: string;
+        address: string;
+        description: string;
+        geo_coordinates: string;
+        image_url: string;
+        price_per_night: string;
+        rating: number;
+      }];
     };
     userEmail: string;
     userPreference: {
