@@ -6,6 +6,7 @@ import { db } from "@/service/firebaseConfig";
 import InfoSection from "../components/InfoSection";
 import Hotels from "../components/Hotels";
 import PlacesItinerary from "../components/PlacesItinerary";
+import Footer from "../components/Footer";
 
 function ViewTrip() {
   const { tripId } = useParams();
@@ -30,10 +31,11 @@ function ViewTrip() {
   }, [tripId]);
 
   return (
-    <div className="p-10 md:px-20 lg:px-44 xl:px-56">
+    <div className="px-10 py-7  md:px-20 lg:px-44 xl:px-56">
       <InfoSection trip={trip} />
       <Hotels trip={trip} />
       <PlacesItinerary trip={trip}/>
+      <Footer />
     </div>
   );
 }

@@ -2,14 +2,34 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CiShare1 } from "react-icons/ci";
 import type { TripType } from "../types";
+import { useEffect, useState } from "react";
+import getLocationImage from "@/service/ImageApi";
 
 
 function InfoSection({ trip }: TripType) {
+
+  const [locationImage, setLocationImage] = useState("https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dHJhdmVsfGVufDB8fDB8fHww")
+
+  useEffect(() => {
+    const getImage = async() => {
+
+      if (!trip?.userPreference?.location) return
+
+      try {
+        const data = await getLocationImage(trip?.userPreference?.location);
+        setLocationImage(data);
+      } catch (error) {
+        console.error('Failed to load images:', error);
+      }
+    }
+    getImage();
+  }, [trip?.userPreference?.location])
+
   return (
     <div>
       <img
-        src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dHJhdmVsfGVufDB8fDB8fHww"
-        alt=""
+        src={locationImage}
+        alt={"Image of" + trip?.userPreference?.location}
         className="h-[350px] w-full object-cover rounded-xl"
       />
       <div className="my-5 flex flex-col gap-2">
