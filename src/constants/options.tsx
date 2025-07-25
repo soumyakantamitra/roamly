@@ -69,7 +69,7 @@ Your response must be in valid JSON format with this structure:
 {
 "name": "Hotel Name",
 "address": "Full Address",
-"price_per_night": "Price range in USD",
+"price_per_night": "Price range($XX to $YY)",
 "image_url": "Direct image URL",
 "geo_coordinates": {
 "latitude": 36.0000,
