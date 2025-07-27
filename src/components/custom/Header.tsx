@@ -1,21 +1,59 @@
 import { MdCardTravel } from "react-icons/md";
 import { Button } from "../ui/button";
 import { BsMoon, BsSun } from "react-icons/bs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "../theme-provider";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { googleLogout } from "@react-oauth/google";
+import {
+  googleLogout,
+  useGoogleLogin,
+  type TokenResponse,
+} from "@react-oauth/google";
 import { CiLogout } from "react-icons/ci";
+import { FcGoogle } from "react-icons/fc";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import axios from "axios";
 
 function Header() {
   const userData = localStorage.getItem("user");
   const user = userData ? JSON.parse(userData) : null;
 
   const { theme, setTheme } = useTheme();
+
+  const [openDailog, setOpenDailog] = useState(false);
+
+  const getUserProfile = (tokenInfo: TokenResponse) => {
+    axios.get(
+        `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo.access_token}`,
+        {
+          headers: {
+            Authorization: `Bearer ${tokenInfo.access_token}`,
+            Accept: "Application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        localStorage.setItem("user", JSON.stringify(response.data));
+        setOpenDailog(false);
+        window.location.reload();
+      });
+  };
+
+  const login = useGoogleLogin({
+    onSuccess: (response: TokenResponse) => getUserProfile(response),
+    onError: (error) => console.log(error),
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -41,6 +79,7 @@ function Header() {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 233 46"
         className="w-40"
+        onClick={() => window.location.href = '/'}
       >
         <g id="logogram" transform="translate(0, 2.5) rotate(0)">
           <path
@@ -63,7 +102,7 @@ function Header() {
       <div className="flex items-center gap-5">
         {user ? (
           <div className="flex items-center gap-5">
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => window.location.href = '/trips'}>
               <MdCardTravel />
               Trips
             </Button>
@@ -75,23 +114,23 @@ function Header() {
                   className="h-[40px] rounded-full"
                 />
               </PopoverTrigger>
-              <PopoverContent className="w-50 cursor-pointer">
+              <PopoverContent className="w-50 cursor-pointer hover:bg-secondary">
                 <div
-                  className="flex items-center gap-3"
+                  className="flex gap-3"
                   onClick={() => {
                     googleLogout();
                     localStorage.clear();
                     window.location.reload();
                   }}
                 >
-                  <CiLogout className="size-5" />
-                  <h3 className="text-[17px]">Logout</h3>
+                  <CiLogout className="size-5 self-center" />
+                  <h2 className="text">Logout</h2>
                 </div>
               </PopoverContent>
             </Popover>
           </div>
         ) : (
-          <Button>Sign in</Button>
+          <Button onClick={() => setOpenDailog(true)}>Sign in</Button>
         )}
 
         <div className="">
@@ -108,6 +147,25 @@ function Header() {
           </Button>
         </div>
       </div>
+      <Dialog open={openDailog} onOpenChange={setOpenDailog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              <img src="/logo.svg" className="w-35" />
+            </DialogTitle>
+            <DialogDescription className="mt-3">
+              Sign in securely with Google authentication
+              <Button
+                onClick={() => login()}
+                className="w-full mt-5 flex gap-4 items-center"
+              >
+                <FcGoogle className="size-5" />
+                Sign in with Google
+              </Button>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
