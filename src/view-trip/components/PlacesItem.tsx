@@ -4,15 +4,15 @@ import { Link } from "react-router-dom"
 
 function PlacesItem( {place} : any ) {
   return (
-    <div className="shadow-md mt-3 p-3 flex gap-5 rounded-xl">
-      <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dHJhdmVsfGVufDB8fDB8fHww" alt="" 
-        className="w-[150px] h-[150px] rounded-xl"
+    <div className="shadow-md shadow-border mt-3 p-3 flex gap-5 rounded-xl bg-card">
+      <img src="https://archive.org/download/placeholder-image/placeholder-image.jpg" alt="" 
+        className="w-[150px] h-[150px] rounded-xl border-1"
       />
       <div>
         <div className="flex justify-between">
           <h2 className="font-bold text-lg self-center">{place?.name}</h2>
           <Link to={'https://www.google.com/maps/search/?api=1&query='+ place?.name} target="_blank">
-            <Button variant="outline" size="sm">
+            <Button variant="secondary" size="icon" className="size-8 cursor-pointer">
               <TbMap2 />
             </Button>
           </Link>
