@@ -1,9 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import getLocationImage from "@/service/ImageApi";
+import type { TripType } from "@/view-trip/types";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"
 
-function UserTripCard( {trip} ) {
+function UserTripCard( {trip}: TripType ) {
 
   const [locationImage, setLocationImage] = useState("https://archive.org/download/placeholder-image/placeholder-image.jpg");
 
