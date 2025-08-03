@@ -72,9 +72,7 @@ function CreateTrip() {
       .replace("{duration}", formData.duration)
       .replace("{budget}", formData.budget)
       .replace("{people}", formData.people);
-    console.log(finalPrompt);
     const trip = await aiGeneration(finalPrompt);
-    console.log(trip);
     setLoading(false);
     saveTrip(JSON.parse(trip));
   };
@@ -107,7 +105,6 @@ function CreateTrip() {
         }
       )
       .then((response) => {
-        console.log(response);
         localStorage.setItem("user", JSON.stringify(response.data));
         setOpenDailog(false);
         OnGenerateTrip();

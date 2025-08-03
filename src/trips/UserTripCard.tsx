@@ -14,7 +14,6 @@ function UserTripCard( {trip} ) {
   
         try {
           const data = await getLocationImage(trip?.userPreference?.location);
-          console.log("Loading image")
           setLocationImage(data);
         } catch (error) {
           console.error('Failed to load images:', error);

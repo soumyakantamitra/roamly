@@ -42,7 +42,7 @@ export default async function getLocationImage(data: string) {
   const apiUrl = baseApi + data;
   try {
     const response = await axios.get(apiUrl, config);
-    console.log(response.data.photos[0].src.original);
+    // console.log(response.data.photos[0].src.original);
     setToLocalStorage(data, response.data.photos[0].src.original);
     return response.data.photos[0].src.original;
   } 
