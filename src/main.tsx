@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import CreateTrip from './create-trip/CreateTrip.tsx'
 import Header from './components/custom/Header.tsx'
 import { Toaster } from 'sonner'
@@ -13,20 +13,33 @@ import Trips from './trips/Trips.tsx'
 
 const router = createBrowserRouter([
   {
-    path : '/',
-    element : <App />
-  },
-  {
-    path : '/create-trip',
-    element : <CreateTrip />
-  },
-  {
-    path: '/view-trip/:tripId',
-    element: <ViewTrip />
-  },
-  {
-    path: '/trips',
-    element: <Trips />
+    path: '/',
+    element: (
+      <>
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+      </>
+    ),
+    children: [
+      {
+        index: true,
+        element: <App />
+      },
+      {
+        path: 'create-trip',
+        element: <CreateTrip />
+      },
+      {
+        path: 'view-trip/:tripId',
+        element: <ViewTrip />
+      },
+      {
+        path: 'trips',
+        element: <Trips />
+      }
+    ]
   }
 ])
 
@@ -34,7 +47,6 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}>
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <Header />
       <Toaster position='top-center' richColors/>
       <RouterProvider router={router}/>
     </ThemeProvider>  
