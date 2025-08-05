@@ -1,7 +1,7 @@
 import { MdCardTravel } from "react-icons/md";
 import { Button } from "../ui/button";
 import { BsMoon, BsSun } from "react-icons/bs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTheme } from "../theme-provider";
 import {
   Popover,
@@ -38,7 +38,6 @@ function Header() {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 233 46"
         className="w-35"
-        onClick={() => window.location.href = '/'}
       >
         <g id="logogram" transform="translate(0, 2.5) rotate(0)">
           <path
@@ -81,14 +80,6 @@ function Header() {
     onError: (error) => console.log(error),
   });
 
-  useEffect(() => {
-    const root = window.document.documentElement;
-    if (root.className === "light") {
-      setTheme("light");
-    } else {
-      setTheme("dark");
-    }
-  }, []);
 
   function themeChange() {
     if (theme === "light") {
