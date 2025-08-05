@@ -25,7 +25,7 @@ function UserTripCard( {trip}: TripType ) {
 
   return (
     <Link to={'/view-trip/' + trip?.id}>
-      <div className="rounded-xl shadow-md dark:shadow-border p-1 hover:shadow-lg bg-card transition-shadow delay-50">
+      <div className="w-60 rounded-xl shadow-md dark:shadow-border p-1 hover:shadow-lg bg-card transition-shadow delay-50">
         <img src={locationImage} alt="" 
           className="border-2 border-zinc-500 rounded-xl w-full h-40 object-cover"
         />
