@@ -69,7 +69,7 @@ Your response must be in valid JSON format with this structure:
 {
 "name": "Hotel Name",
 "address": "Full Address",
-"price_per_night": "Price range($XX to $YY)",
+"price_per_night": "Price range(e.g. $XX to $YY per night)",
 "image_url": "Direct image URL",
 "geo_coordinates": {
 "latitude": 36.0000,
@@ -93,7 +93,7 @@ Your response must be in valid JSON format with this structure:
 },
 "ticket_pricing": "Free / $XX per person",
 "rating": 4.7,
-"best_time_to_visit": "10:00 - 11:00",
+"best_time_to_visit": "10:00 - 11:00"(e.g. HH:MM - HH:MM),
 "time_to_travel_minutes": 15
 }
 ]
