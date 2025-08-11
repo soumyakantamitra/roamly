@@ -15,8 +15,8 @@ function Hotels({ trip } : TripType) {
               />
               </div>
               
-              <div className="my-2 grid grid-rows-[25px_35px_25px_25px] px-2">
-                <h2 className="font-medium">{hotel?.name}</h2>
+              <div className="my-2 grid px-2 content-between h-30">
+                <h2 className="font-medium truncate">{hotel?.name}</h2>
                 <h2 className="text-xs text-gray-500">{hotel?.address}</h2>
                 <h2 className="text-sm font-semibold">{hotel?.price_per_night} per night</h2>
                 <h2 className="text-sm">{hotel?.rating} stars</h2>
