@@ -6,7 +6,7 @@ function Hero() {
     <div className="flex flex-col items-center mx-12 md:mx-20 lg:mx-36 gap-9">
       <h1 className="font-bold text-[2rem] md:text-[2.5rem] lg:text-[3rem] text-center mt-16">
         Plan Your <div className="
-            relative inline-block
+            relative inline-block z-1
             before:content-[''] 
             before:absolute 
             before:inset-y-2

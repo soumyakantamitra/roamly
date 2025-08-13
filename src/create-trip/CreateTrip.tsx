@@ -112,7 +112,7 @@ function CreateTrip() {
   };
 
   return (
-    <div className="sm:px-10 md:px-32 lg:px-56 xl:px-72 px-5 mt-10">
+    <div className="sm:px-10 md:px-32 lg:px-56 xl:px-72 px-5 mt-10 pt-16">
       <h2 className="font-bold text-3xl">Choose your travel preferences</h2>
       <p className="mt-3 text-gray-500 text-xl">
         Let us know what you’re looking for in a trip, and our planner will
@@ -148,7 +148,7 @@ function CreateTrip() {
           {budgetSelect.map((item) => (
             <div
               key={item.id}
-              className={`my-4 p-4 border rounded-lg cursor-pointer 
+              className={`my-4 p-4 border rounded-lg cursor-pointer hover:bg-card
                 ${
                   formData.budget === item.title
                     ? "shadow-[5px_5px_0px_0px_rgba(109,40,217)]"
@@ -172,7 +172,7 @@ function CreateTrip() {
           {travelerCount.map((item) => (
             <div
               key={item.id}
-              className={`p-4 border rounded-lg cursor-pointer
+              className={`p-4 border rounded-lg cursor-pointer hover:bg-card
               ${
                 formData.people === item.people
                   ? "shadow-[5px_5px_0px_0px_rgba(237,153,36)]"

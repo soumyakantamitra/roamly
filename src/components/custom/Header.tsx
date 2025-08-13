@@ -90,7 +90,7 @@ function Header() {
   }
 
   return (
-    <div className="p-3 shadow-sm shadow-border flex justify-between items-center px-5">
+    <div className="p-3 flex justify-between items-center px-5 absolute top-0 z-10 w-full">
       <Link to={"/"}>
         <svg
           data-logo="logo"
